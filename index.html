@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química Orgânica · Lições 27-28 · Pré-ENEM Digital Bio+Tech</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧪</text></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --petroleo:#0f4c5c; --petroleo2:#1b7f79; --ouro:#d4a437; --ouro2:#b98a1e;
+  --creme:#faf6ef; --papel:#fffdf8; --coral:#e36414; --verde:#2a9d5c; --erro:#c0392b;
+  --texto:#24343c; --suave:#6b7d85; --sombra:0 6px 24px rgba(15,76,92,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--creme);color:var(--texto);line-height:1.6}
+.topbar{position:sticky;top:0;z-index:50;background:var(--petroleo);color:#fff;padding:.55rem 1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;box-shadow:var(--sombra)}
+.topbar .brand{font-weight:700;font-size:1rem;display:flex;align-items:center;gap:.4rem}
+.topbar .brand small{font-weight:400;opacity:.8}
+.topbar .stats{margin-left:auto;display:flex;gap:1rem;align-items:center;font-weight:600}
+.topbar .xp{background:var(--ouro);color:#3a2c05;padding:.15rem .7rem;border-radius:999px;font-size:.85rem}
+.topbar .vidas{font-size:.9rem;letter-spacing:.1rem}
+.container{max-width:1180px;margin:0 auto;padding:1.2rem}
+.hero{background:linear-gradient(135deg,var(--petroleo) 0%,var(--petroleo2) 70%,#3aa08b 100%);color:#fff;border-radius:22px;padding:2.4rem 2rem;margin:1.2rem 0;position:relative;overflow:hidden;box-shadow:var(--sombra)}
+.hero::after{content:'⚛️';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:6rem;opacity:.18}
+.hero h1{font-size:clamp(1.5rem,3.4vw,2.3rem);max-width:75%}
+.hero p{max-width:72%;opacity:.92;margin-top:.5rem}
+.tags{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.tag{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);padding:.25rem .8rem;border-radius:999px;font-size:.8rem;font-weight:600}
+section{margin:2.2rem 0}
+h2.sec{font-size:1.45rem;color:var(--petroleo);border-left:6px solid var(--ouro);padding-left:.7rem;margin-bottom:.4rem}
+p.sub{color:var(--suave);margin-bottom:1.2rem}
+/* MENTORAS */
+.mentoras{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:1rem}
+.mentora{background:var(--papel);border-radius:16px;padding:.8rem .5rem;text-align:center;cursor:pointer;border:3px solid transparent;transition:.2s;box-shadow:var(--sombra)}
+.mentora:hover{transform:translateY(-4px)}
+.mentora.ativa{border-color:var(--ouro);background:#fff8e7}
+.mentora img{width:86px;height:86px;border-radius:50%;object-fit:cover;border:3px solid var(--petroleo2)}
+.mentora .nome{font-weight:700;font-size:.8rem;margin-top:.4rem;color:var(--petroleo)}
+.mentora .area{font-size:.68rem;color:var(--suave)}
+.fala{background:#fff8e7;border:1.5px dashed var(--ouro);border-radius:14px;padding:1rem 1.2rem;margin-top:1rem;display:none}
+.fala.on{display:block}
+.fala b{color:var(--petroleo)}
+/* VIDEO + CORNELL */
+.aula-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:1.2rem}
+@media(max-width:900px){.aula-grid{grid-template-columns:1fr}}
+.video-card{background:var(--papel);border-radius:18px;box-shadow:var(--sombra);overflow:hidden}
+.video-card .head{padding:.9rem 1.1rem;background:var(--petroleo);color:#fff}
+.video-card .head h3{font-size:1.05rem}
+.video-card .head .meta{font-size:.75rem;opacity:.85}
+.player{position:relative;padding-top:56.25%}
+.player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.licao-tabs{display:flex;gap:.5rem;padding:.8rem 1.1rem;flex-wrap:wrap}
+.ltab{border:2px solid var(--petroleo2);background:#fff;color:var(--petroleo);padding:.3rem .9rem;border-radius:999px;cursor:pointer;font-weight:700;font-size:.82rem}
+.ltab.ativa{background:var(--petroleo2);color:#fff}
+.cornell{background:var(--papel);border-radius:18px;box-shadow:var(--sombra);padding:1.1rem;display:flex;flex-direction:column;gap:.8rem}
+.cornell h3{color:var(--petroleo);font-size:1.05rem;display:flex;align-items:center;gap:.4rem}
+.cornell label{font-size:.78rem;font-weight:700;color:var(--petroleo2)}
+.cornell textarea{width:100%;border:1.5px solid #d8e2e0;border-radius:10px;padding:.55rem;font-family:inherit;font-size:.88rem;resize:vertical;background:#fff}
+.cornell .cues{min-height:90px}.cornell .notes{min-height:150px}.cornell .synt{min-height:80px}
+.btn{border:0;border-radius:10px;padding:.55rem 1.1rem;font-weight:700;cursor:pointer;font-size:.88rem;transition:.15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-ouro{background:var(--ouro);color:#3a2c05}
+.btn-pet{background:var(--petroleo);color:#fff}
+.btn-linha{background:#fff;border:2px solid var(--petroleo);color:var(--petroleo)}
+.btn-perigo{background:#fdecea;color:var(--erro);border:1.5px solid var(--erro)}
+.nav-aulas{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1rem;flex-wrap:wrap}
+.nav-aulas .prox{font-size:.85rem;color:var(--suave)}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">🧬 Bio+Tech <small>Pré-ENEM Digital · Química Orgânica · Lições 27–28</small></div>
+  <div class="stats">
+    <span class="xp">⭐ XP: <span id="xpTotal">0</span></span>
+    <span class="vidas" id="vidas">❤️❤️❤️</span>
+  </div>
+</header>
+<div class="container">
+
+<div class="hero">
+  <h1>Domine a Química Orgânica: do carbono tetravalente à torre de destilação 🛢️</h1>
+  <p>Uma jornada interativa com <b>8 cientistas brasileiras</b> como mentoras, 8 missões, dinâmica <b>Fato ou Fake</b>, simuladores de hibridação, nomeador IUPAC, Cornell Notes e desafios estilo ENEM com feedback explicativo.</p>
+  <div class="tags">
+    <span class="tag">🎯 ABP</span><span class="tag">🎮 Gamificação</span><span class="tag">🔥 Fato ou Fake</span>
+    <span class="tag">🧪 Simuladores Virtuais</span><span class="tag">📝 Cornell Notes</span><span class="tag">📚 Questões ENEM</span>
+  </div>
+</div>
+
+<section id="secMentoras">
+  <h2 class="sec">👩‍🔬 Escolha sua Mentora</h2>
+  <p class="sub">Oito cientistas brasileiras vão te guiar por essa trilha orgânica — empoderamento feminino na STEM.</p>
+  <div class="mentoras" id="gridMentoras"></div>
+  <div class="fala" id="falaMentora"></div>
+</section>
+
+<section id="secAula">
+  <h2 class="sec">🎥 Videoaula + Cornell Notes</h2>
+  <p class="sub">Assista à lição e registre pistas, anotações e síntese. Suas notas ficam salvas neste navegador.</p>
+  <div class="aula-grid">
+    <div class="video-card">
+      <div class="head">
+        <h3 id="vidTitulo">▶️ Lição 27 — Química Orgânica I</h3>
+        <div class="meta" id="vidMeta">Conecta ENEM · Educa LT · Carbono, ligações e cadeias carbônicas</div>
+      </div>
+      <div class="player"><iframe id="ytPlayer" src="https://www.youtube.com/embed/N9i9nuoaSHQ" title="Lição 27 — Química Orgânica I" allowfullscreen allow="autoplay"></iframe></div>
+      <div class="licao-tabs">
+        <button class="ltab ativa" data-l="27">Lição 27 · Orgânica I</button>
+        <button class="ltab" data-l="28">Lição 28 · Orgânica II</button>
+      </div>
+    </div>
+    <div class="cornell">
+      <h3>📝 Cornell Notes</h3>
+      <div><label>🔑 Pistas / palavras-chave</label><textarea class="cues" id="cnCues" placeholder="Ex.: tetravalência, sp³, cadeia heterogênea, IUPAC..."></textarea></div>
+      <div><label>📒 Anotações</label><textarea class="notes" id="cnNotes" placeholder="Registre o conteúdo principal da aula..."></textarea></div>
+      <div><label>💡 Síntese</label><textarea class="synt" id="cnSynt" placeholder="Resuma em 2-3 frases o que aprendeu..."></textarea></div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <button class="btn btn-ouro" id="btnPDF">📄 Baixar PDF</button>
+        <button class="btn btn-perigo" id="btnLimpar">🗑️ Limpar</button>
+      </div>
+    </div>
+  </div>
+  <div class="nav-aulas">
+    <button class="btn btn-linha" id="btnVoltar">← Voltar</button>
+    <span class="prox" id="proxNome">A seguir: <b>Missão 1 — O Carbono e suas 4 ligações</b></span>
+    <button class="btn btn-pet" id="btnProx">Próximo →</button>
+  </div>
+</section>
+<style>
+/* H5P / INTERATIVOS */
+.h5p{background:var(--papel);border-radius:18px;box-shadow:var(--sombra);padding:1.4rem}
+.h5p h3{color:var(--petroleo);margin-bottom:.3rem}
+.h5p .inst{font-size:.85rem;color:var(--suave);margin-bottom:1rem}
+.dd-zonas{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem;margin:1rem 0}
+.zona{border:2px dashed var(--petroleo2);border-radius:12px;min-height:120px;padding:.6rem;background:#f4faf8}
+.zona h4{font-size:.8rem;color:var(--petroleo);text-align:center;margin-bottom:.4rem}
+.zona .slot{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center}
+.chip{background:var(--petroleo);color:#fff;border-radius:10px;padding:.4rem .7rem;font-size:.78rem;font-weight:600;cursor:grab;user-select:none;display:inline-block;margin:.2rem}
+.chip.ok{background:var(--verde)}
+.chip.err{background:var(--erro)}
+.chips-pool{text-align:center;margin:.6rem 0;padding:.8rem;background:#eef5f3;border-radius:12px}
+.feedback{border-radius:12px;padding:.8rem 1rem;margin-top:.8rem;display:none;font-size:.9rem}
+.feedback.on{display:block}
+.feedback.bom{background:#e7f6ec;border:1.5px solid var(--verde)}
+.feedback.ruim{background:#fdecea;border:1.5px solid var(--erro)}
+/* FLASHCARDS */
+.flash-area{display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start}
+.fcard{width:210px;height:130px;perspective:800px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.virado .inner{transform:rotateY(180deg)}
+.fface{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-direction:column;font-weight:700;box-shadow:var(--sombra);padding:.5rem;text-align:center}
+.fface.front{background:var(--petroleo);color:#fff;font-size:1.3rem}
+.fface.back{background:var(--ouro);color:#3a2c05;transform:rotateY(180deg);font-size:.85rem}
+.fnav{display:flex;gap:.6rem;align-items:center;margin-top:.6rem}
+.fnav span{font-weight:700;color:var(--petroleo)}
+/* TRILHA */
+.trilha{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+.missao{background:var(--papel);border-radius:16px;box-shadow:var(--sombra);padding:1.1rem;border-top:6px solid var(--petroleo2);position:relative}
+.missao.concluida{border-top-color:var(--ouro);background:#fffdf3}
+.missao .num{position:absolute;top:-14px;left:14px;background:var(--petroleo);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.85rem}
+.missao h4{color:var(--petroleo);margin:.3rem 0 .2rem;font-size:1rem}
+.missao .m-mentora{font-size:.72rem;color:var(--suave)}
+.missao p.desc{font-size:.83rem;margin:.4rem 0 .7rem}
+.missao .badge-slot{font-size:1.4rem}
+/* QUIZ */
+.quiz{display:none}
+.quiz.on{display:block}
+.qcard{background:var(--papel);border-radius:16px;box-shadow:var(--sombra);padding:1.4rem;margin-bottom:1rem}
+.qcard .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:.6rem;flex-wrap:wrap;gap:.4rem}
+.qcard .qnum{font-weight:800;color:var(--petroleo)}
+.qcard .qfonte{font-size:.72rem;background:#e8f0ee;color:var(--petroleo);padding:.15rem .6rem;border-radius:999px;font-weight:700}
+.qcard .enun{font-size:.92rem;margin-bottom:.9rem}
+.alt{display:block;width:100%;text-align:left;background:#f6faf9;border:1.5px solid #d8e2e0;border-radius:10px;padding:.6rem .8rem;margin:.35rem 0;cursor:pointer;font-size:.87rem;transition:.15s}
+.alt:hover{border-color:var(--petroleo2);background:#eef7f4}
+.alt.certa{background:#e7f6ec;border-color:var(--verde);font-weight:700}
+.alt.errada{background:#fdecea;border-color:var(--erro)}
+.alt:disabled{cursor:default}
+.xplain{display:none;margin-top:.7rem;background:#fff8e7;border-left:5px solid var(--ouro);border-radius:8px;padding:.7rem .9rem;font-size:.85rem}
+.xplain.on{display:block}
+/* FATO OU FAKE */
+.ff-card{background:var(--papel);border-radius:16px;box-shadow:var(--sombra);padding:1.6rem;text-align:center}
+.ff-afirm{font-size:1.1rem;font-weight:600;margin:1rem 0 1.4rem;min-height:60px}
+.ff-btns{display:flex;gap:1rem;justify-content:center}
+.btn-fato{background:var(--verde);color:#fff;font-size:1rem;padding:.7rem 1.8rem}
+.btn-fake{background:var(--coral);color:#fff;font-size:1rem;padding:.7rem 1.8rem}
+/* BADGES */
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:1rem}
+.badge{background:var(--papel);border-radius:14px;box-shadow:var(--sombra);padding:.9rem .4rem;text-align:center;filter:grayscale(1);opacity:.45;transition:.25s}
+.badge.ganha{filter:none;opacity:1;border:2px solid var(--ouro)}
+.badge .ico{font-size:2.1rem}
+.badge .bnome{font-size:.72rem;font-weight:700;color:var(--petroleo);margin-top:.3rem}
+/* SIMULADOR HIBRIDACAO */
+.sim{background:var(--papel);border-radius:18px;box-shadow:var(--sombra);padding:1.4rem}
+.sim-opcoes{display:flex;gap:.7rem;flex-wrap:wrap;margin:1rem 0}
+.sim-op{border:2px solid var(--petroleo2);background:#fff;border-radius:12px;padding:.7rem 1.1rem;cursor:pointer;font-weight:700;color:var(--petroleo)}
+.sim-op.ativa{background:var(--petroleo2);color:#fff}
+.mol{width:100%;max-width:340px;margin:0 auto;display:block}
+.sim-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.7rem;margin-top:1rem}
+.info-box{background:#eef7f4;border-radius:12px;padding:.7rem;text-align:center}
+.info-box .v{font-weight:800;color:var(--petroleo);font-size:1.05rem}
+.info-box .l{font-size:.72rem;color:var(--suave)}
+/* NOMEADOR IUPAC */
+.nomeador select{font-size:.9rem;padding:.45rem;border-radius:10px;border:1.5px solid #d8e2e0;margin:.2rem}
+.nome-result{margin-top:1rem;background:#eef7f4;border-radius:12px;padding:1rem;text-align:center}
+.nome-result .nome{font-size:1.25rem;font-weight:800;color:var(--petroleo)}
+/* TORRE */
+.torre-wrap{display:flex;gap:1.4rem;flex-wrap:wrap;align-items:flex-start}
+.torre{display:flex;flex-direction:column;gap:.35rem;min-width:230px}
+.tfrac{border-radius:10px;padding:.55rem .8rem;color:#fff;cursor:pointer;font-size:.82rem;font-weight:600;transition:.15s;border:2px solid transparent}
+.tfrac:hover,.tfrac.ativa{border-color:var(--ouro);transform:scale(1.02)}
+.torre-info{flex:1;min-width:250px;background:#fff8e7;border-radius:14px;padding:1.1rem;border:1.5px dashed var(--ouro)}
+.progresso-geral{background:#e8f0ee;border-radius:999px;height:14px;overflow:hidden;margin:.4rem 0 1.4rem}
+.progresso-geral .barra{height:100%;background:linear-gradient(90deg,var(--petroleo2),var(--ouro));width:0%;transition:width .5s}
+footer{margin:3rem 0 1rem;text-align:center;color:var(--suave);font-size:.8rem}
+.modal{position:fixed;inset:0;background:rgba(10,30,35,.6);display:none;align-items:center;justify-content:center;z-index:99}
+.modal.on{display:flex}
+.modal .box{background:#fff;border-radius:20px;padding:2rem;max-width:420px;text-align:center;box-shadow:var(--sombra)}
+.modal .box .grande{font-size:3rem}
+</style>
+
+<section id="secH5P">
+  <h2 class="sec">🧩 Recursos Interativos (H5P)</h2>
+  <p class="sub">Fixe o conteúdo das videoaulas com atividades de arrastar-e-soltar e flashcards IUPAC.</p>
+
+  <div class="h5p">
+    <h3>🔀 Arraste e Solte — Classifique a cadeia carbônica</h3>
+    <p class="inst">Arraste cada estrutura para a classificação correta da cadeia. Depois clique em "Verificar".</p>
+    <div class="chips-pool" id="poolDD"></div>
+    <div class="dd-zonas">
+      <div class="zona" data-z="hom"><h4>Homogênea</h4><div class="slot"></div></div>
+      <div class="zona" data-z="het"><h4>Heterogênea</h4><div class="slot"></div></div>
+      <div class="zona" data-z="sat"><h4>Saturada</h4><div class="slot"></div></div>
+      <div class="zona" data-z="ins"><h4>Insaturada</h4><div class="slot"></div></div>
+    </div>
+    <button class="btn btn-pet" id="btnVerifDD">Verificar</button>
+    <div class="feedback" id="fbDD"></div>
+  </div>
+
+  <div class="h5p" style="margin-top:1.4rem">
+    <h3>🃏 Flashcards — Prefixos IUPAC e sufixos</h3>
+    <p class="inst">Clique no cartão para virar. Memorize: prefixo (nº de carbonos) + infixo (ligação) + sufixo "o".</p>
+    <div class="flash-area">
+      <div class="fcard" id="fcard"><div class="inner">
+        <div class="fface front" id="fFront">MET</div>
+        <div class="fface back" id="fBack">1 carbono</div>
+      </div></div>
+      <div>
+        <div class="fnav">
+          <button class="btn btn-linha" id="fPrev">←</button>
+          <span id="fCont">1 / 18</span>
+          <button class="btn btn-linha" id="fNext">→</button>
+        </div>
+        <p style="font-size:.8rem;color:var(--suave);max-width:280px;margin-top:.6rem">Dica: lembre da sequência <b>MET-ET-PROP-BUT</b> e, a partir de 5, os prefixos gregos (PENT, HEX, HEPT...).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="secSim">
+  <h2 class="sec">🧪 Simulador Virtual — Hibridação do Carbono</h2>
+  <p class="sub">Explore como o carbono organiza suas 4 ligações conforme a hibridação.</p>
+  <div class="sim">
+    <div class="sim-opcoes">
+      <button class="sim-op ativa" data-h="sp3">sp³ — 4 ligações simples</button>
+      <button class="sim-op" data-h="sp2">sp² — 1 dupla + 2 simples</button>
+      <button class="sim-op" data-h="sp">sp — 1 tripla + 1 simples</button>
+    </div>
+    <div id="molBox"></div>
+    <div class="sim-info">
+      <div class="info-box"><div class="v" id="iAng">109°28'</div><div class="l">Ângulo entre ligações</div></div>
+      <div class="info-box"><div class="v" id="iGeo">Tetraédrica</div><div class="l">Geometria</div></div>
+      <div class="info-box"><div class="v" id="iSig">4 σ · 0 π</div><div class="l">Ligações sigma/pi</div></div>
+      <div class="info-box"><div class="v" id="iEx">Metano (CH₄)</div><div class="l">Exemplo</div></div>
+    </div>
+  </div>
+</section>
+<section id="secTrilha">
+  <h2 class="sec">🗺️ Trilha da Química Orgânica</h2>
+  <p class="sub">Complete as 8 missões, desvende o Fato ou Fake e conquiste todos os badges.</p>
+  <div class="progresso-geral"><div class="barra" id="barraProg"></div></div>
+  <div class="trilha" id="trilha"></div>
+</section>
+
+<section id="secMissoes">
+  <h2 class="sec">⚔️ Missões — Desafios estilo ENEM</h2>
+  <p class="sub">Cada missão traz questões oficiais do ENEM e da apostila, com feedback explicativo. Errou? Perde uma vida (mas elas regeneram a cada missão concluída!).</p>
+
+  <div class="quiz" id="quiz1"></div>
+  <div class="quiz" id="quiz2"></div>
+  <div class="quiz" id="quiz3"></div>
+  <div class="quiz" id="quiz4"></div>
+  <div class="quiz" id="quiz5"></div>
+  <div class="quiz" id="quiz6"></div>
+
+  <div class="quiz" id="quiz7">
+    <div class="ff-card">
+      <h3 style="color:var(--petroleo)">🔥 Fato ou Fake — Orgânica sob suspeita</h3>
+      <p class="inst" style="color:var(--suave)">Julgue cada afirmação. 10 rodadas — quantas você acerta?</p>
+      <div class="ff-afirm" id="ffAfirm">Carregando...</div>
+      <div class="ff-btns">
+        <button class="btn btn-fato" id="btnFato">✔ FATO</button>
+        <button class="btn btn-fake" id="btnFake">✖ FAKE</button>
+      </div>
+      <div class="feedback" id="fbFF"></div>
+      <p style="margin-top:.8rem;font-weight:700;color:var(--petroleo)" id="ffPlacar">Rodada 1/10 · Acertos: 0</p>
+    </div>
+  </div>
+
+  <div class="quiz" id="quiz8"></div>
+</section>
+
+<section id="secNomeador">
+  <h2 class="sec">📛 Simulador — Monte o Nome IUPAC</h2>
+  <p class="sub">Monte o nome oficial de um hidrocarboneto escolhendo a cadeia principal, o tipo de ligação e as ramificações.</p>
+  <div class="sim nomeador">
+    <div class="sim-opcoes" style="margin:0 0 .6rem">
+      <select id="selCadeia"></select>
+      <select id="selLig"></select>
+      <select id="selRam"></select>
+      <select id="selPos"></select>
+      <button class="btn btn-pet" id="btnNomear">Montar nome</button>
+    </div>
+    <div class="nome-result" style="display:none" id="nomeRes">
+      <div class="nome" id="nomeFinal"></div>
+      <div style="font-size:.8rem;color:var(--suave)" id="nomeDica"></div>
+    </div>
+    <div class="feedback" id="fbNom"></div>
+  </div>
+</section>
+
+<section id="secTorre">
+  <h2 class="sec">🛢️ Laboratório Virtual — Torre de Destilação do Petróleo</h2>
+  <p class="sub">Clique em cada fração para descobrir composição, temperatura de saída e usos.</p>
+  <div class="torre-wrap">
+    <div class="torre" id="torre"></div>
+    <div class="torre-info" id="torreInfo">
+      <h3 style="color:var(--petroleo)">🔬 Selecione uma fração</h3>
+      <p style="font-size:.88rem">O petróleo é uma mistura complexa de hidrocarbonetos. Na destilação fracionada, os componentes se separam conforme o ponto de ebulição: quanto <b>menor a cadeia</b>, mais <b>volátil</b> a fração e mais <b>alto</b> ela sai na torre.</p>
+    </div>
+  </div>
+</section>
+
+<section id="secBadges">
+  <h2 class="sec">🏅 Galeria de Badges</h2>
+  <p class="sub">Suas conquistas nesta jornada. Complete missões para desbloqueá-las!</p>
+  <div class="badges" id="badges"></div>
+</section>
+
+<div class="modal" id="modalFim">
+  <div class="box">
+    <div class="grande">🏆</div>
+    <h3 style="color:var(--petroleo);margin:.4rem 0">Jornada concluída!</h3>
+    <p id="modalTexto" style="font-size:.92rem"></p>
+    <button class="btn btn-ouro" style="margin-top:1rem" onclick="document.getElementById('modalFim').classList.remove('on')">Continuar explorando</button>
+  </div>
+</div>
+
+<footer>
+  Bio+Tech EduDesign · Pré-ENEM Digital · Química Orgânica — Lições 27 e 28<br>
+  Mulheres brasileiras na STEM 💜 · Conteúdo baseado nas videoaulas Conecta ENEM e em questões oficiais do ENEM.
+</footer>
+</div><!-- /container -->
+<script>
+/* ============ DADOS ============ */
+const MENTORAS=[
+ {img:'assets/mentora1.jpg',nome:'Profa. Helena',area:'Química Verde',missao:1,ins:'Homenagem às pesquisadoras brasileiras da química de produtos naturais.',fala:'Bem-vinda(o)! O carbono é o alicerce da vida: tetravalente, versátil e capaz de formar cadeias infinitas. Vamos começar pelos postulados de Kekulé!'},
+ {img:'assets/mentora2.jpg',nome:'Dra. Cecília',area:'Cristalografia',missao:2,ins:'Inspirada nas pioneiras da difração de raios-X.',fala:'Na Missão 2 você vai enxergar o carbono por dentro: orbitais sp³, sp² e sp, geometrias e ângulos. Prepare-se para visualizar o invisível!'},
+ {img:'assets/mentora3.jpg',nome:'Dra. Joana',area:'Agronomia · Fixação de N',missao:3,ins:'Em homenagem a Johanna Döbereiner, cientista que revolucionou a agricultura brasileira.',fala:'Assim como as raízes se ramificam no solo, as cadeias carbônicas se classificam: abertas ou fechadas, saturadas ou insaturadas, homogêneas ou heterogêneas. Vamos classificar!'},
+ {img:'assets/mentora4.jpg',nome:'Engª Marília',area:'Química Industrial',missao:4,ins:'Homenagem às mulheres da indústria química brasileira.',fala:'Alcanos, alcenos, alcinos, ciclanos e aromáticos: os hidrocarbonetos movem o mundo. Na Missão 4 você domina fórmulas gerais e famílias!'},
+ {img:'assets/mentora5.jpg',nome:'Engª Renata',area:'Engenharia de Materiais',missao:5,ins:'Homenagem às engenheiras brasileiras.',fala:'Nomear compostos é como dar identidade a uma estrutura. Na Missão 5, as regras da IUPAC: cadeia principal, numeração e ordem alfabética!'},
+ {img:'assets/mentora6.jpg',nome:'Dra. Elisa',area:'Energia e Petróleo',missao:6,ins:'Homenagem às cientistas da energia.',fala:'Da torre de destilação ao tanque do carro: na Missão 6 você explora o petróleo, suas frações e os impactos ambientais. Tema certo no ENEM!'},
+ {img:'assets/mentora7.jpg',nome:'Dra. Jaque',area:'Biomedicina · Genômica',missao:7,ins:'Em homenagem a Jaqueline Goes de Jesus, que liderou o sequenciamento do coronavírus no Brasil.',fala:'Ciência exige checagem! No Fato ou Fake, sua missão é separar evidência de mito sobre a química orgânica. Aceita o desafio?'},
+ {img:'assets/mentora8.jpg',nome:'Profa. Sônia',area:'Física · Educação',missao:8,ins:'Em homenagem a Sônia Guimarães, referência na física e na inclusão de mulheres negras na ciência.',fala:'Hora do Simulado Final! Reúna tudo o que aprendeu e encare as questões no estilo ENEM. Você está pronta(o). Boa prova!'}
+];
+const BADGES=[
+ {ico:'🌱',nome:'Tetravalente',m:1},{ico:'🔗',nome:'Mestre dos Orbitais',m:2},
+ {ico:'🌿',nome:'Guardiã das Cadeias',m:3},{ico:'⛽',nome:'Caçadora de Hidrocarbonetos',m:4},
+ {ico:'📛',nome:'Nomeadora IUPAC',m:5},{ico:'🛢️',nome:'Rainha da Torre',m:6},
+ {ico:'🧬',nome:'Detetive Fato ou Fake',m:7},{ico:'🏆',nome:'Mestra ENEM',m:8}
+];
+const MISSOES=[
+ {t:'O Carbono e suas 4 ligações',d:'Postulados de Kekulé e a concepção científica de composto orgânico.'},
+ {t:'Ligações σ/π e Hibridação',d:'Simples, dupla, tripla — e as geometrias sp³, sp² e sp.'},
+ {t:'Cadeias Carbônicas',d:'Classifique: aberta/fechada, saturada/insaturada, homogênea/heterogênea, aromática.'},
+ {t:'Hidrocarbonetos',d:'Alcanos, alcenos, alcinos, alcadienos, ciclanos e aromáticos.'},
+ {t:'Nomenclatura IUPAC',d:'Prefixo + infixo + sufixo: o passaporte oficial das moléculas.'},
+ {t:'Petróleo e Frações',d:'Destilação fracionada, combustíveis e impactos ambientais.'},
+ {t:'Fato ou Fake',d:'10 afirmações sob suspeita: separe ciência de mito!'},
+ {t:'Simulado Final ENEM',d:'6 questões-relâmpago reunindo toda a trilha.'}
+];
+const QUIZ={
+1:[{f:'ENEM 2024',e:'No senso comum, considera-se "orgânico" algo presente nos seres vivos. Na Química, a expressão "compostos orgânicos" teve uso histórico de mais de 200 anos, adquirindo diferentes conotações. Atualmente, atribui-se a essa expressão o significado científico que define esses compostos como substâncias:',a:['benéficas à saúde humana.','capazes de serem biodegradadas.','formadas a partir de gás carbônico.','produzidas sem o uso de agrotóxicos.','contendo carbono como elemento principal.'],c:4,x:'Alternativa E. A definição atual de composto orgânico leva em conta que o carbono é o elemento principal da molécula. Por isso, compostos como CaCO₃ (calcário) não são orgânicos — o carbono não é o elemento principal da estrutura.'},
+  {f:'ENEM 2021',e:'O Prêmio Nobel de Química de 2000 deve-se à descoberta de polímeros condutores de eletricidade. Uma propriedade-chave desses polímeros é a presença de ligações duplas conjugadas ao longo da cadeia principal. Um exemplo desse polímero deve apresentar na cadeia principal:',a:['apenas ligações simples entre os carbonos.','um anel benzênico como cadeia principal.','ligações triplas isoladas entre ligações simples.','ligações duplas alternadas com ligações simples.','apenas ligações simples com ramificações saturadas.'],c:3,x:'Alternativa D. Ligações duplas conjugadas são ligações duplas alternadas com simples (…dupla–simples–dupla–simples…). Esse padrão de elétrons π deslocalizados é o que permite a condução de corrente elétrica ao longo da cadeia.'}],
+2:[{f:'Apostila · Lição 27',e:'A nicotina é um alcaloide presente nas folhas do tabaco (Nicotiana tabacum), com estrutura formada por um anel piridínico (contém N e uma dupla) ligado a um anel pirrolidínico (contém N–CH₃ e só ligações simples). Sobre a nicotina, entendemos que:',a:['é um alcaloide que existe de minérios.','sua fórmula molecular é C₁₀H₁₄N₂.','apresenta somente ligações sigma (σ).','é uma cadeia homogênea.','é uma cadeia com somente híbridos sp³.'],c:1,x:'Alternativa B. Contando os átomos da estrutura chega-se a C₁₀H₁₄N₂. Ela possui ligações π (dupla no anel piridínico), é heterogênea (N entre carbonos) e tem carbonos sp² e sp³.'},
+  {f:'Apostila · Lição 27',e:'O naftaleno, usado contra traças, é um hidrocarboneto aromático de cadeia polinuclear com dois núcleos benzênicos condensados (fundidos), presente no alcatrão da hulha. Sua fórmula molecular é:',a:['C₈H₈','C₁₀H₁₀','C₁₂H₈','C₁₀H₈','C₈H₁₀'],c:3,x:'Alternativa D. Dois anéis benzênicos condensados compartilham 2 carbonos: 6 + 6 − 2 = 10 carbonos e 8 hidrogênios → C₁₀H₈.'}],
+3:[{f:'ENEM 2019',e:'A utilização de corantes na indústria de alimentos é bastante difundida. As estruturas da bixina (urucum), do licopeno (tomate) e do β-caroteno (cenoura e laranja) apresentam como propriedade comum que confere cor a esses compostos a presença de:',a:['cadeia conjugada.','cadeia ramificada.','átomos de carbonos terciários.','ligações duplas de configuração cis.','átomos de carbonos de hibridação sp².'],c:0,x:'Alternativa A. A cor desses pigmentos vem da cadeia conjugada: ligações duplas alternadas com simples, que deslocalizam elétrons π e absorvem luz visível.'},
+  {f:'ENEM 2020 · adaptada',e:'O geraniol é um dos componentes do óleo essencial de rosas. Sua estrutura é uma cadeia de 10 carbonos com duas duplas ligações, duas ramificações metil e uma hidroxila (–OH) em carbono terminal. Sua cadeia carbônica é classificada como:',a:['aberta, normal, saturada e heterogênea.','aberta, ramificada, insaturada e homogênea.','fechada, ramificada, insaturada e heterogênea.','aberta, ramificada, saturada e homogênea.','aberta, ramificada, insaturada e heterogênea.'],c:1,x:'Alternativa B. A cadeia é aberta (acíclica), ramificada (dois metis), insaturada (duas duplas) e homogênea: o oxigênio está na extremidade (–OH terminal), não entre carbonos — heteroátomo só torna a cadeia heterogênea quando está entre átomos de carbono.'}],
+4:[{f:'ENEM 2023',e:'"Lavar a seco" significa lavar com solvente não aquoso. Para reduzir riscos de incêndio, procura-se o solvente que se mostre seguro por não ser inflamável, em função de sua menor quantidade de ligações C–H. Entre hexano (C₆H₁₄), canfeno (C₁₀H₁₆), benzeno (C₆H₆), isooctano (C₈H₁₈) e tricloroetileno (C₂HCl₃), o solvente mais adequado é o:',a:['hexano.','canfeno.','benzeno.','isooctano.','tricloroetileno.'],c:4,x:'Alternativa E. O tricloroetileno possui apenas 1 ligação C–H por molécula (e 3 cloros), sendo o menos inflamável — a inflamabilidade está associada à quantidade de ligações C–H disponíveis para combustão.'},
+  {f:'Apostila · Lição 28',e:'A hulha é uma fonte de hidrocarbonetos aromáticos: sua destilação produz fração gasosa (gás de rua: ~50% H₂, 30% CH₄...), fração líquida (águas amoniacais e alcatrão, fonte de benzeno, tolueno, naftaleno, fenol e anilina) e resíduo sólido (coque). A alternativa que apresenta nomenclaturas APENAS de hidrocarbonetos é:',a:['Metano, benzeno e tolueno.','Monóxido de carbono, benzeno e tolueno.','Metano, amônia e benzeno.','Metano, fenol e anilina.','Metano, fenol e naftaleno.'],c:0,x:'Alternativa A. Hidrocarbonetos contêm somente C e H: metano (CH₄), benzeno (C₆H₆) e tolueno (C₇H₈). CO tem oxigênio; amônia não tem carbono; fenol e anilina possuem O e N.'}],
+5:[{f:'Apostila · Lição 28',e:'A IUPAC determina que, para cadeias ramificadas, deve-se enumerar a cadeia principal a partir do grupo funcional, insaturação ou ramificação mais próxima. A cadeia aberta CH₃–CH₂–CH(CH₃)–CH(CH₃)–CH₂–CH₂–CH₂–CH₃ tem nome oficial:',a:['3,4-dimetil-octano.','5,6-dimetil-octano.','3-dimetil-octano.','4-dimetil-octano.','octano.'],c:0,x:'Alternativa A. Cadeia principal: 8 carbonos (octano). Numerando pela extremidade mais próxima das ramificações, os metis ficam nos carbonos 3 e 4 → 3,4-dimetiloctano (e não 5,6).'},
+  {f:'ENEM 2023',e:'A gasolina é uma mistura de hidrocarbonetos saturados de 8 a 12 carbonos. A gasolina de alto desempenho deve conter elevados teores de hidrocarbonetos de cadeias ramificadas, para resistir à compressão e entrar em ignição apenas sob centelha. Entre n-decano, n-heptano, 2,2,4-trimetilpentano, 3-etil-4-metil-1-eno e 3-etil-2-metil-1-ol, o composto que confere maior desempenho é o:',a:['n-decano.','n-heptano.','2,2,4-trimetilpentano.','3-etil-4-metil-1-eno.','3-etil-2-metil-1-ol.'],c:2,x:'Alternativa C. O 2,2,4-trimetilpentano (isooctano) é hidrocarboneto saturado e o mais ramificado — referência máxima da escala de octanagem. As opções I e II são lineares (baixa octanagem) e as demais não são hidrocarbonetos saturados (uma é alceno, outra álcool).'}],
+6:[{f:'ENEM 2020',e:'Em 2011, uma falha no processo de perfuração realizado por uma empresa petrolífera ocasionou derramamento de petróleo na bacia hidrográfica de Campos, no Rio de Janeiro. Os impactos decorrentes desse derramamento ocorrem porque os componentes do petróleo:',a:['reagem com a água do mar e sofrem degradação, gerando compostos com elevada toxicidade.','acidificam o meio, promovendo o desgaste das conchas calcárias de moluscos e a morte de corais.','dissolvem-se na água, causando a mortandade dos seres marinhos por ingestão da água contaminada.','têm caráter hidrofóbico e baixa densidade, impedindo as trocas gasosas entre o meio aquático e a atmosfera.','têm cadeia pequena e elevada volatilidade, contaminando a atmosfera local e regional em função dos ventos.'],c:3,x:'Alternativa D. Hidrocarbonetos são apolares (hidrofóbicos) e menos densos que a água: formam uma película superficial que bloqueia as trocas gasosas e a passagem de luz, afetando todo o ecossistema.'},
+  {f:'ENEM 2020',e:'Algumas espécies de bactérias do gênero Pseudomonas desenvolvem-se em ambientes contaminados com hidrocarbonetos, pois utilizam essas moléculas como substratos para transformação em energia metabólica. Esses microrganismos transformam o octano em moléculas menos tóxicas, tornando o ambiente propício ao desenvolvimento de fauna e flora. Essas bactérias poderiam ser utilizadas para recuperar áreas contaminadas com:',a:['petróleo.','pesticidas.','lixo nuclear.','gases tóxicos.','metais pesados.'],c:0,x:'Alternativa A. O petróleo é a fonte natural de hidrocarbonetos como o octano — logo, a biorremediação com Pseudomonas se aplica a áreas contaminadas por petróleo.'},
+  {f:'ENEM 2023',e:'Hoje em dia, não é raro encontrar sacolas plásticas oferecidas em supermercados e farmácias — só no Brasil, significa 50 milhões por dia e 18 bilhões ao ano. Os ambientalistas consideram o uso excessivo de sacolas plásticas um risco ambiental, pois:',a:['o uso de materiais descartáveis incrementa o consumo.','o plástico é derivado do petróleo, recurso natural escasso.','as sacolas se transformam em lixo de difícil decomposição.','o risco de contaminação do solo e subsolo por gases tóxicos aumenta.','o consumo de produtos industrializados é estimulado em detrimento dos artesanais.'],c:1,x:'Alternativa B. O cerne da questão é a matéria-prima: o plástico deriva do petróleo, recurso fóssil não renovável e escasso — daí o apelo por reduzir o consumo de sacolas.'}],
+8:[{f:'Simulado · Revisão',e:'Sobre o átomo de carbono, elemento central da Química Orgânica, é correto afirmar que ele:',a:['é bivalente e forma apenas ligações simples.','é tetravalente e pode formar cadeias, inclusive com ligações duplas e triplas.','forma somente compostos iônicos com halogênios.','liga-se apenas a hidrogênio e oxigênio.','nunca forma cadeias fechadas.'],c:1,x:'O carbono é tetravalente (4 ligações), realiza ligações σ e π (simples, duplas, triplas) e tem facilidade de se ligar a outros carbonos formando cadeias abertas ou fechadas.'},
+  {f:'Simulado · Revisão',e:'A fórmula geral dos alcenos (cadeia aberta com uma ligação dupla) e dos ciclanos (cadeia fechada só com ligações simples) é, em ambos os casos:',a:['CₙH₂ₙ₊₂','CₙH₂ₙ','CₙH₂ₙ₋₂','CₙH₂ₙ₋₆','CₙHₙ'],c:1,x:'CₙH₂ₙ. Tanto alcenos (1 dupla) quanto ciclanos (1 anel) perdem 2 hidrogênios em relação ao alcano (CₙH₂ₙ₊₂) — por isso são isômeros de função entre si.'},
+  {f:'Simulado · Revisão',e:'A estrutura H₃C–CH₂–O–CH₂–CH₃ (éter etílico) apresenta cadeia:',a:['aberta, normal, saturada e homogênea.','aberta, normal, saturada e heterogênea.','fechada, ramificada, insaturada e homogênea.','aberta, ramificada, saturada e heterogênea.','aberta, normal, insaturada e heterogênea.'],c:1,x:'O oxigênio está ENTRE átomos de carbono → cadeia heterogênea. Não há ramificações (normal), nem insaturações (saturada), e é acíclica (aberta).'},
+  {f:'Simulado · Revisão',e:'No 1-metilciclobuteno (anel de 4 carbonos com uma dupla e um metil no carbono insaturado), a numeração correta da cadeia deve começar:',a:['por qualquer carbono, pois o anel é simétrico.','pelo carbono da ramificação, pois metil tem prioridade.','pela insaturação (dupla), que deve receber os menores números.','pelo carbono mais hidrogenado.','sempre no sentido horário.'],c:2,x:'Em ciclenos, a numeração inicia pela dupla ligação (menores locantes para a insaturação), e não pela ramificação — regra IUPAC: insaturação > ramificação na prioridade de numeração.'},
+  {f:'Simulado · Revisão',e:'Na destilação fracionada do petróleo, a fração que sai no TOPO da torre, com as moléculas menores e mais voláteis (C₁ a C₄), é:',a:['o asfalto.','o óleo diesel.','a gasolina.','o gás (GLP).','o querosene.'],c:3,x:'O gás (metano a butano, C₁–C₄) tem os menores pontos de ebulição e sai no topo da torre; as frações pesadas (óleos, asfalto) ficam na base.'},
+  {f:'Simulado · Revisão',e:'O benzeno (C₆H₆) é o representante clássico das cadeias aromáticas porque apresenta:',a:['anel de 6 carbonos com apenas ligações simples.','anel hexagonal com ligações duplas e simples alternadas (conjugadas).','cadeia aberta com três duplas ligações.','dois anéis condensados como o naftaleno.','heteroátomo de oxigênio no anel.'],c:1,x:'O núcleo benzênico é um anel hexagonal com 3 ligações duplas alternadas (sistema conjugado, elétrons π deslocalizados) — essa é a definição de aromaticidade cobrada no ENEM.'}]
+};
+const FF=[
+ {t:'O carbono, por ser da família 4A, realiza sempre quatro ligações.',f:true,x:'FATO! Tetravalência: 4 elétrons na camada de valência → 4 ligações (postulado de Kekulé).'},
+ {t:'Um carbono quaternário está ligado a quatro hidrogênios.',f:false,x:'FAKE! Carbono quaternário liga-se a 4 outros CARBONOS — nenhum hidrogênio.'},
+ {t:'Numa ligação tripla há 1 ligação sigma e 2 ligações pi.',f:true,x:'FATO! Tripla = 1σ + 2π (carbono sp, geometria linear, 180°).'},
+ {t:'Uma cadeia é heterogênea quando possui heteroátomo nas extremidades.',f:false,x:'FAKE! A cadeia só é heterogênea quando o heteroátomo (O, N, S, P) está ENTRE carbonos. Na extremidade, a cadeia é homogênea.'},
+ {t:'O benzeno é uma cadeia alicíclica.',f:false,x:'FAKE! O benzeno é AROMÁTICO (anel com duplas conjugadas). Alicíclicas são as cadeias fechadas NÃO aromáticas.'},
+ {t:'Os alcinos têm fórmula geral CₙH₂ₙ₋₂.',f:true,x:'FATO! Cadeia aberta com 1 tripla perde 4 H em relação ao alcano: CₙH₂ₙ₋₂.'},
+ {t:'Na nomenclatura IUPAC, as ramificações são citadas em ordem alfabética.',f:true,x:'FATO! Etil antes de metil, por exemplo: 4-etil-2-metil-hexano.'},
+ {t:'A gasolina é a fração de maior massa molar obtida do petróleo.',f:false,x:'FAKE! As frações mais pesadas são os óleos lubrificantes e o asfalto (resíduo). Gasolina: C₅–C₁₀, fração leve.'},
+ {t:'Hidrocarbonetos são polares e muito solúveis em água.',f:false,x:'FAKE! São apolares (moléculas de C e H), praticamente insolúveis em água — por isso o petróleo derramado boia e forma manchas.'},
+ {t:'O carbono com hibridação sp forma geometria linear, com ângulos de 180°.',f:true,x:'FATO! sp → linear (180°); sp² → trigonal plana (120°); sp³ → tetraédrica (109°28\').'}
+];
+const FLASH=[['MET','1 carbono'],['ET','2 carbonos'],['PROP','3 carbonos'],['BUT','4 carbonos'],['PENT','5 carbonos'],['HEX','6 carbonos'],['HEPT','7 carbonos'],['OCT','8 carbonos'],['NON','9 carbonos'],['DEC','10 carbonos'],['UNDEC','11 carbonos'],['DODEC','12 carbonos'],['-AN-','ligação simples'],['-EN-','ligação dupla'],['-IN-','ligação tripla'],['-O','sufixo de hidrocarboneto'],['METIL','ramificação CH₃–'],['ETIL','ramificação CH₃–CH₂–']];
+const FRACOES=[
+ {n:'Gás (GLP)',t:'até 40 °C',c:'C₁–C₄',cor:'#5aa9e6',d:'Gás de cozinha (GLP) e gás natural. Moléculas pequenas, muito voláteis, saem no topo da torre.'},
+ {n:'Gasolina',t:'40–180 °C',c:'C₅–C₁₀',cor:'#7fc8a9',d:'Combustível de automóveis. A qualidade (octanagem) aumenta com hidrocarbonetos ramificados como o 2,2,4-trimetilpentano.'},
+ {n:'Querosene',t:'180–230 °C',c:'C₁₁–C₁₇',cor:'#d4a437',d:'Combustível de aviação e iluminação. Cadeias médias.'},
+ {n:'Óleo diesel',t:'230–300 °C',c:'C₁₄–C₁₈',cor:'#e36414',d:'Combustível de caminhões, ônibus e máquinas agrícolas.'},
+ {n:'Óleos lubrificantes',t:'300–570 °C',c:'C₁₈–C₂₅',cor:'#b5651d',d:'Óleos combustíveis e lubrificantes industriais. Frações pesadas.'},
+ {n:'Asfalto (resíduo)',t:'resíduo final',c:'C₂₆–C₄₀',cor:'#3d405b',d:'Resíduo sólido usado em pavimentação. Maior massa molar da torre.'}
+];
+/* ============ ESTADO ============ */
+let S={xp:+(localStorage.oad_xp||0),vidas:3,miss:JSON.parse(localStorage.oad_miss||'[]'),badges:JSON.parse(localStorage.oad_badges||'[]')};
+function salvar(){localStorage.oad_xp=S.xp;localStorage.oad_miss=JSON.stringify(S.miss);localStorage.oad_badges=JSON.stringify(S.badges);renderTopo();renderBadges();renderProg();}
+function renderTopo(){document.getElementById('xpTotal').textContent=S.xp;document.getElementById('vidas').textContent='❤️'.repeat(S.vidas)+'🖤'.repeat(3-S.vidas);}
+function renderBadges(){document.getElementById('badges').innerHTML=BADGES.map(b=>`<div class="badge ${S.badges.includes(b.m)?'ganha':''}"><div class="ico">${b.ico}</div><div class="bnome">${b.nome}</div></div>`).join('');}
+function renderProg(){document.getElementById('barraProg').style.width=(S.miss.length/8*100)+'%';}
+function addXP(n){S.xp+=n;}
+function concluir(m){if(!S.miss.includes(m)){S.miss.push(m);if(!S.badges.includes(m))S.badges.push(m);S.vidas=3;salvar();renderTrilha();}
+ if(S.miss.length>=8){document.getElementById('modalTexto').innerHTML=`Você completou as 8 missões com <b>${S.xp} XP</b>! Todas as badges conquistadas — você está pronta(o) para o ENEM. 🎓`;document.getElementById('modalFim').classList.add('on');}}
+/* ============ MENTORAS ============ */
+function renderMentoras(){document.getElementById('gridMentoras').innerHTML=MENTORAS.map((m,i)=>`<div class="mentora" data-i="${i}"><img src="${m.img}" alt="${m.nome}"><div class="nome">${m.nome}</div><div class="area">${m.area}</div></div>`).join('');
+ document.querySelectorAll('.mentora').forEach(el=>el.onclick=()=>{document.querySelectorAll('.mentora').forEach(x=>x.classList.remove('ativa'));el.classList.add('ativa');const m=MENTORAS[+el.dataset.i];const f=document.getElementById('falaMentora');f.classList.add('on');f.innerHTML=`<b>${m.nome} (${m.area})</b> · <i>${m.ins}</i><br>💬 “${m.fala}”<br><small>Guia da <b>Missão ${m.missao} — ${MISSOES[m.missao-1].t}</b>. <a href="#quiz${m.missao}" style="color:var(--coral);font-weight:700">Ir para a missão →</a></small>`;});}
+/* ============ TRILHA ============ */
+function renderTrilha(){document.getElementById('trilha').innerHTML=MISSOES.map((m,i)=>`<div class="missao ${S.miss.includes(i+1)?'concluida':''}"><div class="num">${i+1}</div><span class="badge-slot">${S.badges.includes(i+1)?BADGES[i].ico:'🔒'}</span><h4>${m.t}</h4><div class="m-mentora">Mentora: ${MENTORAS[i].nome} · ${MENTORAS[i].area}</div><p class="desc">${m.d}</p><button class="btn ${S.miss.includes(i+1)?'btn-ouro':'btn-pet'}" onclick="abrirMissao(${i+1})">${S.miss.includes(i+1)?'Refazer ✔':'Começar →'}</button></div>`).join('');}
+function abrirMissao(n){document.querySelectorAll('.quiz').forEach(q=>q.classList.remove('on'));const q=document.getElementById('quiz'+n);q.classList.add('on');q.scrollIntoView({behavior:'smooth'});}
+/* ============ QUIZ ENGINE ============ */
+function renderQuiz(n){const el=document.getElementById('quiz'+n);const qs=QUIZ[n];if(!qs)return;
+ el.innerHTML=`<h3 style="color:var(--petroleo);margin-bottom:.6rem">⚔️ Missão ${n} — ${MISSOES[n-1].t} <small style="color:var(--suave)">com ${MENTORAS[n-1].nome}</small></h3>`+qs.map((q,qi)=>`
+ <div class="qcard" data-q="${qi}">
+  <div class="qhead"><span class="qnum">Questão ${qi+1}/${qs.length}</span><span class="qfonte">${q.f}</span></div>
+  <p class="enun">${q.e}</p>
+  ${q.a.map((a,ai)=>`<button class="alt" data-a="${ai}"><b>${'ABCDE'[ai]})</b> ${a}</button>`).join('')}
+  <div class="xplain">💡 ${q.x}</div>
+ </div>`).join('')+`<div id="fim${n}"></div>`;
+ let acertos=0,resp=0;
+ el.querySelectorAll('.qcard').forEach(card=>{card.querySelectorAll('.alt').forEach(btn=>btn.onclick=()=>{
+  const q=qs[+card.dataset.q],ai=+btn.dataset.a;
+  card.querySelectorAll('.alt').forEach(b=>b.disabled=true);
+  card.querySelector('.xplain').classList.add('on');resp++;
+  if(ai===q.c){btn.classList.add('certa');addXP(100);acertos++;}
+  else{btn.classList.add('errada');card.querySelectorAll('.alt')[q.c].classList.add('certa');S.vidas=Math.max(0,S.vidas-1);}
+  salvar();
+  if(resp===qs.length){concluir(n);document.getElementById('fim'+n).innerHTML=`<div class="feedback bom on">🏅 Missão ${n} concluída! ${acertos}/${qs.length} corretas · Badge <b>${BADGES[n-1].ico} ${BADGES[n-1].nome}</b> desbloqueada! Vidas restauradas ❤️❤️❤️</div>`;document.getElementById('fim'+n).scrollIntoView({behavior:'smooth'});}
+ });});}
+/* ============ FATO OU FAKE ============ */
+let ffI=0,ffAc=0;
+function ffRender(){if(ffI>=FF.length){concluir(7);document.getElementById('ffAfirm').innerHTML=`🔚 Fim! Você acertou <b>${ffAc}/10</b>. Badge 🧬 Detetive Fato ou Fake conquistada!`;document.querySelector('.ff-btns').style.display='none';return;}
+ document.getElementById('ffAfirm').textContent='“'+FF[ffI].t+'”';document.getElementById('fbFF').className='feedback';document.getElementById('ffPlacar').textContent=`Rodada ${ffI+1}/10 · Acertos: ${ffAc}`;}
+function ffResp(v){const item=FF[ffI];const fb=document.getElementById('fbFF');
+ if(v===item.f){ffAc++;addXP(50);fb.className='feedback bom on';}else{S.vidas=Math.max(0,S.vidas-1);fb.className='feedback ruim on';}
+ fb.textContent=item.x;salvar();ffI++;setTimeout(ffRender,2200);}
+/* ============ DRAG & DROP ============ */
+const DD=[
+ {t:'CH₃–CH₂–CH₂–CH₃ (butano)',z:'hom'},
+ {t:'H₃C–CH₂–O–CH₃ (metoxietano)',z:'het'},
+ {t:'CH₃–CH₂–CH₂–CH₂–CH₃ (pentano)',z:'sat'},
+ {t:'CH₃–CH=CH–CH₃ (but-2-eno)',z:'ins'}];
+function initDD(){const pool=document.getElementById('poolDD');pool.innerHTML='';DD.forEach((d,i)=>{const c=document.createElement('span');c.className='chip';c.textContent=d.t;c.draggable=true;c.dataset.z=d.z;c.id='chip'+i;
+ c.ondragstart=e=>e.dataTransfer.setData('text',c.id);pool.appendChild(c);});
+ document.querySelectorAll('.zona .slot, #poolDD').forEach(z=>{z.ondragover=e=>e.preventDefault();z.ondrop=e=>{e.preventDefault();const id=e.dataTransfer.getData('text');const chip=document.getElementById(id);z.appendChild(chip);};});}
+function verifDD(){let ok=0,tot=0;document.querySelectorAll('.zona .chip').forEach(c=>{tot++;const zona=c.closest('.zona').dataset.z;
+ if(c.dataset.z===zona){c.classList.add('ok');c.classList.remove('err');ok++;}else{c.classList.add('err');c.classList.remove('ok');}});
+ const fb=document.getElementById('fbDD');const pool=document.getElementById('poolDD');
+ if(pool.children.length>0){fb.className='feedback ruim on';fb.textContent='Arraste TODAS as estruturas para as zonas antes de verificar.';return;}
+ if(ok===tot){fb.className='feedback bom on';fb.innerHTML='✅ Perfeito! Butano: cadeia homogênea (só C e H) · Metoxietano: heterogênea (O entre carbonos) · Pentano: saturada (só ligações simples) · But-2-eno: insaturada (dupla ligação).';addXP(100);salvar();}
+ else{fb.className='feedback ruim on';fb.textContent=`Você acertou ${ok}/${tot}. Reveja: heteroátomo ENTRE carbonos = heterogênea; dupla/tripla = insaturada.`;}}
+/* ============ FLASHCARDS ============ */
+let fI=0;
+function fRender(){document.getElementById('fcard').classList.remove('virado');setTimeout(()=>{document.getElementById('fFront').textContent=FLASH[fI][0];document.getElementById('fBack').textContent=FLASH[fI][1];},200);document.getElementById('fCont').textContent=`${fI+1} / ${FLASH.length}`;}
+/* ============ HIBRIDAÇÃO ============ */
+const HIB={
+ sp3:{ang:"109°28'",geo:'Tetraédrica',sig:'4 σ · 0 π',ex:'Metano (CH₄)',
+  svg:`<svg class="mol" viewBox="0 0 200 160"><text x="92" y="84" font-size="20" font-weight="bold" fill="#0f4c5c">C</text><line x1="100" y1="68" x2="100" y2="30" stroke="#24343c" stroke-width="2.5"/><text x="92" y="24" font-size="15" fill="#24343c">H</text><line x1="92" y1="80" x2="50" y2="110" stroke="#24343c" stroke-width="2.5"/><text x="30" y="122" font-size="15" fill="#24343c">H</text><line x1="108" y1="80" x2="150" y2="110" stroke="#24343c" stroke-width="2.5"/><text x="155" y="122" font-size="15" fill="#24343c">H</text><line x1="100" y1="88" x2="100" y2="128" stroke="#1b7f79" stroke-width="7" opacity=".6"/><text x="92" y="148" font-size="15" fill="#1b7f79">H</text><text x="60" y="55" font-size="11" fill="#6b7d85">109°28'</text></svg>`},
+ sp2:{ang:'120°',geo:'Trigonal plana',sig:'3 σ · 1 π',ex:'Eteno (H₂C=CH₂)',
+  svg:`<svg class="mol" viewBox="0 0 200 120"><text x="55" y="64" font-size="20" font-weight="bold" fill="#0f4c5c">C</text><text x="130" y="64" font-size="20" font-weight="bold" fill="#0f4c5c">C</text><line x1="75" y1="56" x2="130" y2="56" stroke="#24343c" stroke-width="2.5"/><line x1="75" y1="62" x2="130" y2="62" stroke="#24343c" stroke-width="2.5"/><line x1="60" y1="52" x2="30" y2="30" stroke="#24343c" stroke-width="2"/><text x="12" y="28" font-size="14">H</text><line x1="60" y1="68" x2="30" y2="92" stroke="#24343c" stroke-width="2"/><text x="12" y="104" font-size="14">H</text><line x1="142" y1="52" x2="170" y2="30" stroke="#24343c" stroke-width="2"/><text x="172" y="28" font-size="14">H</text><line x1="142" y1="68" x2="170" y2="92" stroke="#24343c" stroke-width="2"/><text x="172" y="104" font-size="14">H</text><text x="95" y="90" font-size="11" fill="#6b7d85">120°</text></svg>`},
+ sp:{ang:'180°',geo:'Linear',sig:'2 σ · 2 π',ex:'Etino (H−C≡C−H)',
+  svg:`<svg class="mol" viewBox="0 0 220 90"><text x="15" y="55" font-size="16">H</text><line x1="32" y1="48" x2="70" y2="48" stroke="#24343c" stroke-width="2.5"/><text x="75" y="55" font-size="20" font-weight="bold" fill="#0f4c5c">C</text><line x1="95" y1="42" x2="140" y2="42" stroke="#24343c" stroke-width="2"/><line x1="95" y1="48" x2="140" y2="48" stroke="#24343c" stroke-width="2"/><line x1="95" y1="54" x2="140" y2="54" stroke="#24343c" stroke-width="2"/><text x="145" y="55" font-size="20" font-weight="bold" fill="#0f4c5c">C</text><line x1="165" y1="48" x2="200" y2="48" stroke="#24343c" stroke-width="2.5"/><text x="202" y="55" font-size="16">H</text><text x="105" y="80" font-size="11" fill="#6b7d85">180° · linear</text></svg>`}};
+function setHib(h){document.querySelectorAll('.sim-op').forEach(b=>b.classList.toggle('ativa',b.dataset.h===h));const d=HIB[h];document.getElementById('molBox').innerHTML=d.svg;document.getElementById('iAng').textContent=d.ang;document.getElementById('iGeo').textContent=d.geo;document.getElementById('iSig').textContent=d.sig;document.getElementById('iEx').textContent=d.ex;}
+/* ============ NOMEADOR IUPAC ============ */
+const CAD=['pent','hex','hept','oct','non','dec'];
+function initNomeador(){document.getElementById('selCadeia').innerHTML=CAD.map((c,i)=>`<option value="${i+5}">${c.charAt(0).toUpperCase()+c.slice(1)}a cadeia (${i+5} C)</option>`).join('');
+ document.getElementById('selLig').innerHTML='<option value="an">só ligações simples (-an-)</option><option value="en">1 dupla (-en-)</option><option value="in">1 tripla (-in-)</option>';
+ document.getElementById('selRam').innerHTML='<option value="">sem ramificação</option><option value="metil">1 metil</option><option value="dimetil">2 metis</option><option value="etil">1 etil</option>';
+ document.getElementById('selPos').innerHTML='<option value="2">posição 2</option><option value="3">posição 3</option><option value="4">posição 4</option>';}
+function nomear(){const n=+document.getElementById('selCadeia').value,lig=document.getElementById('selLig').value,ram=document.getElementById('selRam').value,pos=document.getElementById('selPos').value;
+ const raiz=CAD[n-5];let nome=raiz+'-'+lig+'-o';let prefixo='';
+ if(ram==='metil')prefixo=pos+'-metil-';
+ if(ram==='dimetil')prefixo=pos+','+(pos+1)+'-dimetil-';
+ if(ram==='etil')prefixo=pos+'-etil-';
+ if(lig!=='an')nome=raiz+'-'+pos+'-'+lig+'-o';
+ nome=prefixo+nome.replace('--','-');
+ document.getElementById('nomeRes').style.display='block';
+ document.getElementById('nomeFinal').textContent=nome;
+ document.getElementById('nomeDica').textContent='Ordem: locante(s) + ramificação (ordem alfabética) + cadeia principal + infixo de ligação + sufixo "o".';
+ const fb=document.getElementById('fbNom');fb.className='feedback bom on';fb.textContent='✅ Nome montado! Compare com as regras da videoaula da Lição 28 e tente outras combinações.';addXP(20);salvar();}
+/* ============ TORRE ============ */
+function renderTorre(){document.getElementById('torre').innerHTML=FRACOES.map((f,i)=>`<div class="tfrac" style="background:${f.cor}" data-i="${i}">${f.n} · ${f.c}<br><small>${f.t}</small></div>`).join('');
+ document.querySelectorAll('.tfrac').forEach(el=>el.onclick=()=>{document.querySelectorAll('.tfrac').forEach(x=>x.classList.remove('ativa'));el.classList.add('ativa');const f=FRACOES[+el.dataset.i];
+ document.getElementById('torreInfo').innerHTML=`<h3 style="color:var(--petroleo)">${f.n}</h3><p style="font-size:.85rem"><b>Faixa de temperatura:</b> ${f.t}<br><b>Composição:</b> ${f.c}</p><p style="font-size:.88rem;margin-top:.5rem">${f.d}</p>`;});}
+/* ============ CORNELL + VÍDEO ============ */
+let licaoAtual=27;
+function setLicao(l){licaoAtual=l;document.querySelectorAll('.ltab').forEach(b=>b.classList.toggle('ativa',+b.dataset.l===l));
+ if(l===27){document.getElementById('ytPlayer').src='https://www.youtube.com/embed/N9i9nuoaSHQ';document.getElementById('vidTitulo').textContent='▶️ Lição 27 — Química Orgânica I';document.getElementById('vidMeta').textContent='Conecta ENEM · Educa LT · Carbono, ligações e cadeias carbônicas';document.getElementById('proxNome').innerHTML='A seguir: <b>Lição 28 — Hidrocarbonetos e Nomenclatura</b>';}
+ else{document.getElementById('ytPlayer').src='https://www.youtube.com/embed/hrncwhkeND8';document.getElementById('vidTitulo').textContent='▶️ Lição 28 — Química Orgânica II';document.getElementById('vidMeta').textContent='Conecta ENEM · Educa LT · Hidrocarbonetos, IUPAC e Petróleo';document.getElementById('proxNome').innerHTML='A seguir: <b>Missão 1 — O Carbono e suas 4 ligações</b>';}
+ carregarNotas();}
+function carregarNotas(){['cues','notes','synt'].forEach(k=>{document.getElementById('cn'+k.charAt(0).toUpperCase()+k.slice(1)).value=localStorage['cn'+licaoAtual+'_'+k]||'';});}
+function salvarNotas(){['cues','notes','synt'].forEach(k=>{localStorage['cn'+licaoAtual+'_'+k]=document.getElementById('cn'+k.charAt(0).toUpperCase()+k.slice(1)).value;});}
+function baixarPDF(){const {jsPDF}=window.jspdf;const doc=new jsPDF();
+ doc.setFontSize(16);doc.text('Cornell Notes — Química Orgânica · Lição '+licaoAtual,14,18);
+ doc.setFontSize(11);doc.text('Bio+Tech EduDesign · Pré-ENEM Digital',14,26);
+ doc.setFontSize(13);doc.text('Pistas / palavras-chave',14,38);doc.setFontSize(10);
+ doc.text(doc.splitTextToSize(document.getElementById('cnCues').value||'—',120),14,45);
+ doc.setFontSize(13);doc.text('Anotações',80,38);doc.setFontSize(10);
+ doc.text(doc.splitTextToSize(document.getElementById('cnNotes').value||'—',105),80,45);
+ const h=200;doc.line(14,h,196,h);doc.setFontSize(13);doc.text('Síntese',14,h+8);doc.setFontSize(10);
+ doc.text(doc.splitTextToSize(document.getElementById('cnSynt').value||'—',180),14,h+15);
+ doc.save('cornell-notes-licao-'+licaoAtual+'.pdf');}
+/* ============ BOOT ============ */
+renderTopo();renderMentoras();renderTrilha();renderBadges();renderProg();
+[1,2,3,4,5,6,8].forEach(renderQuiz);
+document.getElementById('btnFato').onclick=()=>ffResp(true);
+document.getElementById('btnFake').onclick=()=>ffResp(false);ffRender();
+initDD();document.getElementById('btnVerifDD').onclick=verifDD;
+document.getElementById('fcard').onclick=()=>document.getElementById('fcard').classList.toggle('virado');
+document.getElementById('fPrev').onclick=()=>{fI=(fI-1+FLASH.length)%FLASH.length;fRender();};
+document.getElementById('fNext').onclick=()=>{fI=(fI+1)%FLASH.length;fRender();};fRender();
+document.querySelectorAll('.sim-op').forEach(b=>b.onclick=()=>setHib(b.dataset.h));setHib('sp3');
+initNomeador();document.getElementById('btnNomear').onclick=nomear;
+renderTorre();
+document.querySelectorAll('.ltab').forEach(b=>b.onclick=()=>setLicao(+b.dataset.l));
+['Cues','Notes','Synt'].forEach(k=>document.getElementById('cn'+k).addEventListener('input',salvarNotas));
+document.getElementById('btnPDF').onclick=baixarPDF;
+document.getElementById('btnLimpar').onclick=()=>{if(confirm('Limpar as anotações desta lição?')){['Cues','Notes','Synt'].forEach(k=>document.getElementById('cn'+k).value='');salvarNotas();}};
+document.getElementById('btnVoltar').onclick=()=>window.scrollTo({top:0,behavior:'smooth'});
+document.getElementById('btnProx').onclick=()=>{if(licaoAtual===27)setLicao(28);else abrirMissao(1);};
+carregarNotas();
+</script>
+</body>
+</html>
